@@ -16,3 +16,4 @@
 
 ## 预览
 ![home](image/home.png)
+![stock](image/stock.png)
