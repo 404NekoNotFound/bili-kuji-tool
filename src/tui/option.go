@@ -98,7 +98,6 @@ func (ui *UI) Run() {
 func (ui *UI) initParams() {
 	go func() {
 		ui.verifyAccount()
-		ui.db.DefaultRewards()
 		ui.loadStock()
 	}()
 }

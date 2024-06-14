@@ -206,6 +206,8 @@ func (ui *UI) transferToMIDConfirm(mid string, stock *table.Reward) *tview.Grid 
 				"response", resp.String(),
 			)...,
 		)
+
+		go ui.loadStock()
 		ui.updateContent(ui.home())
 	})
 	form.AddButton("Cancel", func() {
