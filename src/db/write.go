@@ -59,3 +59,12 @@ func (db *DB) InsertRewards(rewards []*table.Reward) {
 		db.log.Error(err.Error())
 	}
 }
+
+func (db *DB) UpdatePrice(price *table.Price) {
+	if err := db.db.
+		Where(&table.Price{ItemName: price.ItemName}).
+		Assign(&table.Price{Price: price.Price}).
+		FirstOrCreate(price).Error; err != nil {
+		db.log.Error(err.Error())
+	}
+}

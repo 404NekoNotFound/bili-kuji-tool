@@ -103,3 +103,28 @@ func (db *DB) accountFormat(accounts []table.Account) []*request.Account {
 
 	return users
 }
+
+func (db *DB) GetStockPreviewByLevel(level int64) []*table.RewardPreview {
+	var result []*table.RewardPreview
+
+	if err := db.db.Model(&table.Reward{}).
+		Select("item_name", "level", "COUNT(level) AS count").
+		Where(&table.Reward{Level: level}).
+		Group("item_name").
+		Order("level").
+		Find(&result).Error; err != nil {
+		db.log.Error(err.Error())
+	}
+
+	return result
+}
+
+func (db *DB) GetPrice(itemName string) *table.Price {
+	prices := &table.Price{}
+
+	if err := db.db.Where(&table.Price{ItemName: itemName}).Find(prices).Error; err != nil {
+		db.log.Error(err.Error())
+	}
+
+	return prices
+}

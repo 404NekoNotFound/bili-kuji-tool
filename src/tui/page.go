@@ -19,7 +19,7 @@ func (ui *UI) home() *tview.Grid {
 			ui.updateContent(ui.accountPreview())
 		}).
 		AddItem("export", "导出数据", '2', func() {
-			ui.updateContent(ui.exportStock())
+			ui.updateContent(ui.exportGuidance())
 		})
 
 	return ui.contentLayout().
@@ -162,15 +162,15 @@ func (ui *UI) transferToMIDConfirm(mid string, stock *table.Reward) *tview.Grid 
 	)
 
 	form := tview.NewForm()
-	form.AddTextView("MID", response.Get("card.mid").String(), 20, 1, true, false)
-	form.AddTextView("Receiver", response.Get("card.name").String(), 20, 1, true, false)
-	form.AddTextView("Level", levelInfo, 20, 1, true, false)
-	form.AddTextView("Sign", response.Get("card.sign").String(), 20, 1, true, false)
-	form.AddTextView("Item", stock.ItemName, 20, 1, true, false)
-	form.AddTextView("Item ID", fmt.Sprint(stock.ItemID), 20, 1, true, false)
-	form.AddTextView("Get Time", time.Unix(stock.GetTime, 0).Local().Format("2006-01-02 15:04:05"), 20, 1, true, false)
-	form.AddTextView("Provider", stock.Owner, 20, 1, true, false)
-	form.AddTextView("Provider MID", stock.Mid, 20, 1, true, false)
+	form.AddTextView("MID", response.Get("card.mid").String(), 30, 1, true, false)
+	form.AddTextView("Receiver", response.Get("card.name").String(), 30, 1, true, false)
+	form.AddTextView("Level", levelInfo, 30, 1, true, false)
+	form.AddTextView("Sign", response.Get("card.sign").String(), 30, 1, true, false)
+	form.AddTextView("Item", stock.ItemName, 30, 1, true, false)
+	form.AddTextView("Item ID", fmt.Sprint(stock.ItemID), 30, 1, true, false)
+	form.AddTextView("Get Time", time.Unix(stock.GetTime, 0).Local().Format("2006-01-02 15:04:05"), 30, 1, true, false)
+	form.AddTextView("Provider", stock.Owner, 30, 1, true, false)
+	form.AddTextView("Provider MID", stock.Mid, 30, 1, true, false)
 
 	form.AddButton("Confirm", func() {
 		resp, err = ui.request.UserBoxUse(stock.ItemID, mid, ui.db.GetAccountByDedeUserID(stock.Mid))

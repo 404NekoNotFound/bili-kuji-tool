@@ -31,6 +31,14 @@ type Reward struct {
 	Mid      string
 }
 
+// Price 自定义价格
+type Price struct {
+	gorm.Model
+
+	ItemName string `gorm:"primary_key"`
+	Price    string
+}
+
 // RewardPreview 库存简介
 type RewardPreview struct {
 	ItemName string

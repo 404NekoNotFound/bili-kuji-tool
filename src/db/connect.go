@@ -19,7 +19,7 @@ func Connect(log *zap.Logger) *DB {
 		log.Fatal(err.Error())
 	}
 
-	if err = db.AutoMigrate(&table.Account{}, &table.Reward{}); err != nil {
+	if err = db.AutoMigrate(&table.Account{}, &table.Reward{}, &table.Price{}); err != nil {
 		log.Fatal(err.Error())
 	}
 
