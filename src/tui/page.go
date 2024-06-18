@@ -178,7 +178,6 @@ func (ui *UI) transferToMIDConfirm(mid string, stock *table.Reward) *tview.Grid 
 			ui.logger.Error(err.Error())
 		}
 
-		response = gjson.Parse(resp.String())
 		if response.Get("code").Int() != 0 || resp.StatusCode() != 200 {
 			ui.logger.Error("transfer to mid error",
 				logger.Data(
