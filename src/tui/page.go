@@ -4,6 +4,7 @@ import (
 	"bili-kuji-management/src/db/table"
 	"bili-kuji-management/src/logger"
 	"fmt"
+	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"github.com/skip2/go-qrcode"
 	"github.com/tidwall/gjson"
@@ -13,7 +14,7 @@ import (
 func (ui *UI) home() *tview.Grid {
 	list := tview.NewList().
 		AddItem("transfer", "装扮转增", '0', func() {
-			ui.updateContent(ui.stocksPreview())
+			ui.updateContent(ui.stocksPreview(""))
 		}).
 		AddItem("account", "帐号管理", '1', func() {
 			ui.updateContent(ui.accountPreview())
@@ -63,9 +64,9 @@ func (ui *UI) accountGuidance() *tview.Grid {
 		AddItem(login, 0, 1, 1, 1, 0, 0, true)
 }
 
-func (ui *UI) stocksPreview() *tview.Grid {
+func (ui *UI) stocksPreview(keyword string) *tview.Grid {
 	list := tview.NewList()
-	stocks := ui.db.StockPreview()
+	stocks := ui.db.StockPreview(keyword)
 
 	for k, stock := range stocks {
 		list.AddItem(fmt.Sprintf("%v (%v)", stock.ItemName, ui.getLevel(stock.Level)), fmt.Sprintf("Stock: %v", stock.Count), '0'+rune(k), func() {
@@ -79,11 +80,22 @@ func (ui *UI) stocksPreview() *tview.Grid {
 		ui.updateContent(ui.home())
 	})
 
+	search := tview.NewInputField()
+
+	search.SetLabel("Search: ").
+		SetFieldWidth(10).
+		SetText(keyword).
+		//SetAcceptanceFunc(tview.InputFieldInteger).
+		SetDoneFunc(func(key tcell.Key) {
+			ui.updateContent(ui.stocksPreview(search.GetText()))
+		})
+
 	return ui.contentLayout().
-		AddItem(tview.NewGrid().SetBorders(true).SetRows(1, 0, 3).SetColumns(0).
+		AddItem(tview.NewGrid().SetBorders(true).SetRows(1, 1, 0, 3).SetColumns(0).
 			AddItem(ui.centerText("Stocks Preview"), 0, 0, 1, 1, 0, 0, false).
-			AddItem(list, 1, 0, 1, 1, 0, 0, true).
-			AddItem(back, 2, 0, 1, 1, 0, 0, true),
+			AddItem(search, 1, 0, 1, 1, 0, 0, true).
+			AddItem(list, 2, 0, 1, 1, 0, 0, true).
+			AddItem(back, 3, 0, 1, 1, 0, 0, true),
 			1, 1, 1, 3, 0, 0, true)
 }
 
@@ -109,7 +121,7 @@ func (ui *UI) itemStockPreview(itemName string) *tview.Grid {
 	back := tview.NewButton("Back")
 	back.SetBorder(true)
 	back.SetSelectedFunc(func() {
-		ui.updateContent(ui.stocksPreview())
+		ui.updateContent(ui.stocksPreview(""))
 	})
 
 	return ui.contentLayout().

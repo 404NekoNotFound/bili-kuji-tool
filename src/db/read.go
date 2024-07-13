@@ -37,11 +37,12 @@ func (db *DB) GetStocks() []*table.Reward {
 	return rewards
 }
 
-func (db *DB) StockPreview() []*table.RewardPreview {
+func (db *DB) StockPreview(keyword string) []*table.RewardPreview {
 	var result []*table.RewardPreview
 
 	if err := db.db.Model(&table.Reward{}).
 		Select("item_name", "level", "COUNT(level) AS count").
+		Where("item_name LIKE ?", "%"+keyword+"%").
 		Group("item_name").
 		Order("level").
 		Find(&result).Error; err != nil {

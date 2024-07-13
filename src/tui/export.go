@@ -34,7 +34,7 @@ func (ui *UI) exportGuidance() *tview.Grid {
 
 func (ui *UI) exportStock() *tview.Grid {
 	text := ""
-	stocks := ui.db.StockPreview()
+	stocks := ui.db.StockPreview("")
 
 	var currentLevel int64
 
