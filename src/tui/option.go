@@ -11,7 +11,7 @@ import (
 const (
 	activityName = "星时遗迹"
 	activityId   = 32
-	version      = "v1.1.1"
+	version      = "v1.2.0"
 )
 
 type UI struct {
